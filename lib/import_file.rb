@@ -80,7 +80,7 @@ class ImportFile
             @logger.info "Linha #{index+1}: Não foi possível inserir registro de fabricante [#{emplacamento[:fabricante_codigo]} - #{emplacamento[:fabricante]}] - #{e.inspect}"
           ensure
             @logger.info "Linha #{index+1}: Fabricante [#{emplacamento[:fabricante_codigo]},#{emplacamento[:fabricante]}] criado com sucesso."
-            @fabricante_id = database.get_connect.exec("SELECT * FROM fabricantes_id_seq").first['last_value']
+            @fabricante_id = emplacamento[:fabricante_codigo]
           end
         end
       end
@@ -100,7 +100,7 @@ class ImportFile
             @logger.info "Linha #{index+1}: Não foi possivel inserir registro de fabricante [#{emplacamento[:grupo_modelo_veiculo_codigo]}-#{emplacamento[:grupo_modelo_veiculo]}]"
           ensure
             @logger.info "Linha #{index+1}: Familia [#{emplacamento[:grupo_modelo_veiculo_codigo]},#{emplacamento[:grupo_modelo_veiculo]}] criada com sucesso."
-            @familia_id = database.get_connect.exec("SELECT * FROM familias_id_seq").first['last_value']
+            @familia_id = emplacamento[:grupo_modelo_veiculo_codigo]
           end
         end
       end
@@ -119,7 +119,7 @@ class ImportFile
             @logger.info "Linha #{index+1}: Não foi possível inserir registro de sub-segmento [#{emplacamento[:sub_segmento_codigo]}-#{emplacamento[:sub_segmento]}]"
           ensure
             @logger.info "Linha #{index+1}: Sub-Segmento [#{emplacamento[:sub_segmento_codigo]},#{emplacamento[:sub_segmento]}] criado com sucesso."
-            @sub_segmento_id = database.get_connect.exec("SELECT * FROM sub_segmentos_id_seq").first['last_value']
+            @sub_segmento_id = emplacamento[:sub_segmento_codigo]
           end
         end
       end
@@ -140,7 +140,7 @@ class ImportFile
             @logger.info "Linha #{index+1}: Não foi possível inserir registro de sub-segmento [#{emplacamento[:modelo_codigo]}-#{emplacamento[:modelo]}]"
           ensure
             @logger.info "Linha #{index+1}: Modelo [#{emplacamento[:modelo_codigo]},#{emplacamento[:modelo]}] criado com sucesso."
-            @modelo_id = database.get_connect.exec("SELECT * FROM modelos_id_seq").first['last_value']
+            @modelo_id = emplacamento[:modelo_codigo]
           end
         end
       end
@@ -176,7 +176,7 @@ class ImportFile
                 @logger.info "Linha #{index+1}: Não foi possível inserir uma cidade [#{emplacamento[:municipio_codigo]},#{emplacamento[:municipio]}, #{emplacamento[:estado]}]"
               ensure
                 @logger.info "Linha #{index+1}: Estado não encontrado: [#{emplacamento[:estado]}]"
-                @cidade_id = database.get_connect.exec("SELECT * FROM cidades_id_seq").first['last_value']
+                @cidade_id = emplacamento[:municipio_codigo]
                 @estado_id = estado["id"]
               end
             else
@@ -186,7 +186,7 @@ class ImportFile
                 @logger.info "Não foi possível inserir uma cidade sem estado [#{emplacamento[:municipio_codigo]},#{emplacamento[:municipio]}]"
               ensure
                 @logger.info "Linha #{index+1}: Estado não encontrado: [#{emplacamento[:estado]}]"
-                @cidade_id = database.get_connect.exec("SELECT * FROM cidades_id_seq").first['last_value']
+                @cidade_id = emplacamento[:municipio_codigo]
               end
             end
           end
@@ -205,7 +205,7 @@ class ImportFile
             @logger.info "Linha #{index+1}: Não foi possível inserir um registro de combustível [#{emplacamento[:combustivel_codigo]}-#{emplacamento[:combustivel]}]"
           ensure
             @logger.info "Combustivel criado com sucesso.[#{emplacamento[:combustivel_codigo]},#{emplacamento[:combustivel]}]"
-            @conbustivel_id = database.get_connect.exec("SELECT * FROM combustiveis_id_seq").first['last_value']
+            @conbustivel_id = emplacamento[:combustivel_codigo]
           end
         end
       end
