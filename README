@@ -1,0 +1,45 @@
+IMPORTAÇÃO DE DADOS DA FENABRAVE
+
+Script de importação de dados de emplacamentos da fenabrave.
+
+Requisitos:
+
+    Ruby >= 1.8.7
+    lftp (cliente de ftp)
+    Gems:
+      rake - >= 0.8.7
+      pg   -  = 0.14.1
+
+Utilização:
+
+  Arquivo executável na raiz:
+
+      % sh import
+      % ./import
+
+  Arquivo ruby:
+
+      % ruby import.rb
+
+  Tarefa rake:
+
+      % rake content:import:data
+
+  Obs: para utilizar a tarefa rake é necessário ter o 'rake' instalado. Caso seja necessário instalar,
+o arquivo da gem se encontra na pasta 'gems'
+
+Funcionamento:
+
+  Através do lftp, é obtido o arquivo com emplacamentos diários da fenabrave (o arquivo se chama Emplacamentos_Diario_Segmentos_S_Fabricante.txt).
+  Esse arquivo é salvo na pasta 'download' para em seguida ser processado pela importação.
+  É verificado se os dados deste arquivo já foram importados. Para isso, é verificado se existe emplacamento com a data do
+dia anterior (pois os emplacamentos disponibilizados no arquivo são do dia anterior a data atual). Se existir, a importação
+não irá prosseguir.
+  O arquivo é carregado e cada linha (representando 1 emplacamento) é importada para a base de dados do ABRACAM obedecendo as dependências de cada
+emplacamento (Empresa, Fabricante, Família, Sub-Segmento, Modelo, Cidade e Combustível).
+  O andamento da importação é mostrado no arquivo de log que é criado cada vez que a importação é executada. Os logs ficam na pasta 'log' e são
+criados seguindo o padrão: "log_"+dia+mes+ano+"_"+hora+minuto+segundo+".txt".
+
+Autor:
+
+  Erick Pereira <erick.pereira@cg.agence.com.br>
