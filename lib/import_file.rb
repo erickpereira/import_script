@@ -133,9 +133,9 @@ class ImportFile
         else
           @logger.info "Linha #{index+1}: Não foi encontrado o modelo informado [#{emplacamento[:modelo]}]"
           begin
-            database.get_connect.exec("INSERT INTO modelos (id, nome, familia_id, sub_segmento_id, emplacamentos_count) VALUES ('#{emplacamento[:modelo_codigo]}', '#{emplacamento[:modelo]}', '#{@familia_id}', '#{@sub_segmento_id}', 1);") if @sub_segmento_id and @familia_id
             @logger.info "Não existe família definida para inserir este modelo" unless @familia_id
             @logger.info "Não existe sub-segmento definido para inserir este modelo" unless @sub_segmento_id
+            database.get_connect.exec("INSERT INTO modelos (id, nome, familia_id, sub_segmento_id, emplacamentos_count) VALUES ('#{emplacamento[:modelo_codigo]}', '#{emplacamento[:modelo]}', '#{@familia_id}', '#{@sub_segmento_id}', 1);") if @sub_segmento_id and @familia_id
           rescue
             @logger.info "Linha #{index+1}: Não foi possível inserir registro de sub-segmento [#{emplacamento[:modelo_codigo]}-#{emplacamento[:modelo]}]"
           ensure
