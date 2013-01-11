@@ -30,6 +30,18 @@ namespace :content do
       end
     end
   end
+
+  namespace :monthly_import do
+    desc "importa os dados do ftp da fenabrave na base de dados do abracam - emplacamentos mensais"
+    task :data do
+      ftp = FTP.new(:monthly)
+      if ftp.need_do_import?
+        import = ImportFile.new
+        import.do_import
+      end
+    end
+  end
+
 end
 
 

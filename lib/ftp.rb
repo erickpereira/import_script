@@ -22,12 +22,13 @@ end
 class FTP
 
   SERVER_FILE = "Emplacamentos_Diario_Segmentos_S_Fabricante.txt"
+  MONTHLY_SERVER_FILE = "Emplacamentos_Mensal_Segmentos_S_Fabricante.txt"
   LOCAL_FILE = "download/emplacamentos.txt"
 
-  def initialize
+  def initialize(import_type = :daily)
     @logger = Log.new
     config_file = YAML::load(File.open('config/ftp.yml'))
-    get_file(config_file)
+    import_type == :daily ? get_file(config_file,SERVER_FILE) : get_file(config_file,MONTHLY_SERVER_FILE)
     @logger.close
   end
 
@@ -55,13 +56,13 @@ class FTP
     need_import
   end
 
-  def get_file(configurations)
+  def get_file(configurations, file_server)
     # usa o LFTP para baixar o arquivo com uma conexao ativa
     # na Amazon eh necessario setar o IP publico para conexoes ativas
     if File.exist?(LOCAL_FILE)
       @logger.info "Arquivo existente de emplacamentos foi apagado com sucesso." if File.delete(LOCAL_FILE)
     end
-    result = system("lftp -u #{configurations['user']},#{configurations['password']} -e 'set ftp:port-ipv4 #{configurations['ip']}; set ftp:passive-mode false; set xfer:clobber true; get -c #{SERVER_FILE} -o #{LOCAL_FILE}; quit' #{configurations['url']}")
+    result = system("lftp -u #{configurations['user']},#{configurations['password']} -e 'set ftp:port-ipv4 #{configurations['ip']}; set ftp:passive-mode false; set xfer:clobber true; get -c #{file_server} -o #{LOCAL_FILE}; quit' #{configurations['url']}")
     if result == false
       @logger.info "Ocorreu um problema ao obter o arquivo do FTP."
     end
